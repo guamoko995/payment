@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "payment_service/payment";
+
+package payment;
+
+// Payment - интерфейс экспортируемого сервиса 
+service Payment {
+    // TopUpAccount - RPC, которая пополняет аккаунт
+    // переданного ID на переданную Amount.
+    rpc UpSum(UpRequest) returns(enum){}
+    // TopUpAccount - RPC, которая переводит Amount средств
+    // с первого ID на второй.
+    rpc SumTransfer(TransferRequest) returns (enum) {}
+}
+
+// Запрос на пополнение баланса с RecipientID на указанную Sum.
+message UpRequest {
+    uint64 ID = 1;
+    uint64 Sum = 2;
+}
+
+// Запрос на перевод указанной Sum с PayerID на RecipientID.
+message TransferRequest {
+    uint64 GeterID = 1;
+    uint64 SenderID = 2;
+    uint64 Sum = 3;
+}
+
+// Сообщение об ошибке. Пустая строка в случае успеха.
+message enum {}
