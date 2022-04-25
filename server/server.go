@@ -50,8 +50,8 @@ func (s *PaymentServer) AmountTransfer(ctx context.Context, req *proto.TransferR
 }
 
 // создает экземпляр gRPC прокси-сервиса
-func newServer(database string) *PaymentServer {
-	b, err := db.NewDB(database)
+func newServer() *PaymentServer {
+	b, err := db.NewDB()
 	if err != nil {
 		panic(err)
 	}
@@ -67,7 +67,7 @@ func main() {
 	}
 	var opts []grpc.ServerOption
 	grpcServer := grpc.NewServer(opts...)
-	proto.RegisterPaymentServer(grpcServer, newServer(*database))
+	proto.RegisterPaymentServer(grpcServer, newServer())
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 	go func() {

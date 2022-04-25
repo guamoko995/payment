@@ -1,13 +1,20 @@
 package database
 
 import (
+	"os"
 	"testing"
 )
 
 // Тест работы базы данных
 func TestDatabase(t *testing.T) {
-	// Создание временной базы данных (с пустым именем файла)
-	b, err := NewDB("")
+	*host = "localhost"
+	*port = 5432
+	*user = "postgres"
+	*password = os.Getenv("pgxPass")
+	*dbname = "postgres"
+
+	// Инициализация базы данных
+	b, err := NewDB()
 	if err != nil {
 		t.Errorf("New error: %s", err)
 	}
@@ -37,7 +44,7 @@ func TestDatabase(t *testing.T) {
 		t.Errorf("Set error: %s", err)
 	}
 	if balance != sum {
-		t.Errorf("Expected balance: %v, added balance %v.", balance, sum)
+		t.Errorf("Expected balance: %v, added balance %v.", sum, balance)
 	}
 
 	// Списание с баланса
@@ -54,7 +61,7 @@ func TestDatabase(t *testing.T) {
 	}
 	sum -= decr
 	if balance != sum {
-		t.Errorf("Expected balance: %v, added balance %v.", balance, sum)
+		t.Errorf("Expected balance: %v, added balance %v.", sum, balance)
 	}
 
 	// Перевод
@@ -80,5 +87,11 @@ func TestDatabase(t *testing.T) {
 	}
 	if balance != dif {
 		t.Errorf("Expected balance: %v, added balance %v.", dif, balance)
+	}
+
+	// Удаление таблицы
+	_, err = b.sql.Exec("DROP TABLE accounts")
+	if err != nil {
+		t.Errorf("Set error: %s", err)
 	}
 }
