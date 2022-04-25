@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "payment_service/payment";
 
-package payment;
+package proto;
 
 // Payment - интерфейс экспортируемого сервиса 
 service Payment {

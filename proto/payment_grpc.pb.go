@@ -40,7 +40,7 @@ func NewPaymentClient(cc grpc.ClientConnInterface) PaymentClient {
 
 func (c *paymentClient) UpSum(ctx context.Context, in *UpRequest, opts ...grpc.CallOption) (*Enum, error) {
 	out := new(Enum)
-	err := c.cc.Invoke(ctx, "/payment.Payment/UpSum", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.Payment/UpSum", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func (c *paymentClient) UpSum(ctx context.Context, in *UpRequest, opts ...grpc.C
 
 func (c *paymentClient) SumTransfer(ctx context.Context, in *TransferRequest, opts ...grpc.CallOption) (*Enum, error) {
 	out := new(Enum)
-	err := c.cc.Invoke(ctx, "/payment.Payment/SumTransfer", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.Payment/SumTransfer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func _Payment_UpSum_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/payment.Payment/UpSum",
+		FullMethod: "/proto.Payment/UpSum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PaymentServer).UpSum(ctx, req.(*UpRequest))
@@ -120,7 +120,7 @@ func _Payment_SumTransfer_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/payment.Payment/SumTransfer",
+		FullMethod: "/proto.Payment/SumTransfer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PaymentServer).SumTransfer(ctx, req.(*TransferRequest))
@@ -132,7 +132,7 @@ func _Payment_SumTransfer_Handler(srv interface{}, ctx context.Context, dec func
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Payment_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "payment.Payment",
+	ServiceName: "proto.Payment",
 	HandlerType: (*PaymentServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
