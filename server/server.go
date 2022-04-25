@@ -6,10 +6,14 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
+	"os/signal"
+	"sync"
+	"syscall"
 
 	"google.golang.org/grpc"
 
-	proto "payment_service/payment"
+	proto "payment_service/proto"
 	db "payment_service/server/database"
 )
 
@@ -64,5 +68,19 @@ func main() {
 	var opts []grpc.ServerOption
 	grpcServer := grpc.NewServer(opts...)
 	proto.RegisterPaymentServer(grpcServer, newServer(*database))
-	grpcServer.Serve(lis)
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		err := grpcServer.Serve(lis)
+		if err != nil {
+			log.Printf("failed to listen: %v\n", err)
+		}
+		wg.Done()
+	}()
+	interruptCh := make(chan os.Signal, 1)
+	signal.Notify(interruptCh, os.Interrupt, syscall.SIGTERM)
+	log.Printf("got signal %v, attempting graceful stop\n", <-interruptCh)
+	grpcServer.GracefulStop()
+	wg.Wait()
+	log.Println("Server gracefully stopped")
 }
