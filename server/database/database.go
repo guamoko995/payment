@@ -49,12 +49,10 @@ INSERT INTO accounts (
 )
 `
 
-type Money [8]byte
-
 // Account - запись в базе данных
 type Account struct {
 	ID      uint64
-	Balance Money
+	Balance int64
 }
 
 // DB - база данных платежных аккаунтов.
