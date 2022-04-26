@@ -16,15 +16,15 @@ service Payment {
 
 // Запрос на пополнение баланса с RecipientID на указанную Sum.
 message UpRequest {
-    uint64 ID = 1;
-    uint64 Sum = 2;
+    int64 ID = 1;
+    int64 Sum = 2;
 }
 
 // Запрос на перевод указанной Sum с PayerID на RecipientID.
 message TransferRequest {
-    uint64 SenderID = 1;
-    uint64 GeterID = 2;
-    uint64 Sum = 3;
+    int64 SenderID = 1;
+    int64 GeterID = 2;
+    int64 Sum = 3;
 }
 
 // Сообщение об ошибке. Пустая строка в случае успеха.

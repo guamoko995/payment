@@ -89,7 +89,7 @@ type UnsafePaymentServer interface {
 }
 
 func RegisterPaymentServer(s grpc.ServiceRegistrar, srv PaymentServer) {
-	s.RegisterService(&paymentDesc, srv)
+	s.RegisterService(&Payment_ServiceDesc, srv)
 }
 
 func _Payment_UpSum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -128,10 +128,10 @@ func _Payment_SumTransfer_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-// paymentDesc is the grpc.ServiceDesc for Payment service.
+// Payment_ServiceDesc is the grpc.ServiceDesc for Payment service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var paymentDesc = grpc.ServiceDesc{
+var Payment_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.Payment",
 	HandlerType: (*PaymentServer)(nil),
 	Methods: []grpc.MethodDesc{

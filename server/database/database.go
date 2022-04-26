@@ -60,7 +60,7 @@ INSERT INTO accounts (
 
 // Account - запись в базе данных
 type Account struct {
-	ID      uint64
+	ID      int64
 	Balance int64
 }
 
@@ -135,7 +135,7 @@ func (db *DB) AddAccount() error {
 }
 
 // GetBalance - возвращает баланс по ID.
-func (db *DB) GetBalance(ID uint64) (int64, error) {
+func (db *DB) GetBalance(ID int64) (int64, error) {
 	tx, err := db.Sql.Begin()
 	if err != nil {
 		return 0, err
@@ -158,7 +158,7 @@ func (db *DB) GetBalance(ID uint64) (int64, error) {
 }
 
 // UpBalance - пополняет баланс по ID на указанную сумму.
-func (db *DB) UpBalance(ID uint64, sum int64) error {
+func (db *DB) UpBalance(ID int64, sum int64) error {
 	tx, err := db.Sql.Begin()
 	if err != nil {
 		return err
@@ -174,7 +174,7 @@ func (db *DB) UpBalance(ID uint64, sum int64) error {
 }
 
 // DownBalance - списывает с баланса по ID указанную сумму.
-func (db *DB) DownBalance(ID uint64, sum int64) error {
+func (db *DB) DownBalance(ID int64, sum int64) error {
 	tx, err := db.Sql.Begin()
 	if err != nil {
 		return err
@@ -190,7 +190,7 @@ func (db *DB) DownBalance(ID uint64, sum int64) error {
 }
 
 // AmountTransfer - осуществляет перевод суммы с одного ID на другой.
-func (db *DB) SumTransfer(senderID, geterID uint64, sum int64) error {
+func (db *DB) SumTransfer(senderID, geterID int64, sum int64) error {
 	// Получение баланса отправителя.
 	senderBalance, err := db.GetBalance(senderID)
 	if err != nil {
@@ -230,7 +230,7 @@ func (db *DB) SumTransfer(senderID, geterID uint64, sum int64) error {
 }
 
 type ErrorInsufficientFunds struct {
-	ID            uint64
+	ID            int64
 	RequestAmount int64
 }
 

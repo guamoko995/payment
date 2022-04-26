@@ -15,7 +15,7 @@ import (
 
 // UpSum (фейковый клиент) отправляет на сервис запрос на пополнение счета с переданным id
 // на переданную sum с помощью gRPC.
-func UpSum(client proto.PaymentClient, id, sum uint64) error {
+func UpSum(client proto.PaymentClient, id, sum int64) error {
 	// Установка соединения с ожиданием ответа 10 секунд.
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -33,7 +33,7 @@ func UpSum(client proto.PaymentClient, id, sum uint64) error {
 
 // SumTransfer (фейковый клиент) отправляет на сервис запрос на перевод со счета
 // senderID на счет geterID указанной sum с помощью gRPC.
-func SumTransfer(client proto.PaymentClient, senderID, geterID, sum uint64) error {
+func SumTransfer(client proto.PaymentClient, senderID, geterID, sum int64) error {
 	// Установка соединения с ожиданием ответа 10 секунд.
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -50,7 +50,7 @@ func SumTransfer(client proto.PaymentClient, senderID, geterID, sum uint64) erro
 	return nil
 }
 
-// Тест работы базы данных
+// Тест работы сервиса
 func TestServer(t *testing.T) {
 	// Запуск сервера.
 	go main()
@@ -88,7 +88,7 @@ func TestServer(t *testing.T) {
 
 	// Клиентское обращение к серверу с запросом на пополнение баланса
 	sum := int64(1000)
-	err = UpSum(client, uint64(1), uint64(sum))
+	err = UpSum(client, int64(1), sum)
 
 	if err != nil {
 		t.Errorf("Set error: %s", err)
@@ -105,7 +105,7 @@ func TestServer(t *testing.T) {
 
 	// Клиентское обращение к серверу с запросом на перевод
 	dif := int64(100)
-	err = SumTransfer(client, uint64(1), uint64(2), uint64(dif))
+	err = SumTransfer(client, int64(1), int64(2), dif)
 	if err != nil {
 		t.Errorf("Set error: %s", err)
 	}
@@ -131,7 +131,7 @@ func TestServer(t *testing.T) {
 	// Клиентское обращение к серверу с запросом на перевод, превышающем
 	// средства на счете отправителя.
 	dif2 := int64(200)
-	err = SumTransfer(client, uint64(2), uint64(1), uint64(dif2))
+	err = SumTransfer(client, int64(2), int64(1), dif2)
 	expErr := "rpc error: code = Unknown desc = На счете 2 недостаточно средств"
 	if err.Error() != expErr {
 		t.Errorf("Expect error: %s; added error: %s", expErr, err)
