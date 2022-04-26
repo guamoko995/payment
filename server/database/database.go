@@ -15,8 +15,8 @@ var (
 	host     = flag.String("databaseHost", "localhost", "The database server address")
 	port     = flag.Int("databasePort", 5432, "The database server port")
 	user     = flag.String("databaseUser", "postgres", "The database username")
-	password = flag.String("databasePassword", os.Getenv("pgxPass"), "The database username")
-	dbname   = flag.String("databaseName", "postgres", "The database username")
+	password = flag.String("databasePassword", os.Getenv("pgxPass"), "The database password")
+	dbname   = flag.String("databaseName", "postgres", "The database name")
 )
 
 // schemaSQL - заголовок схемы базы данных.

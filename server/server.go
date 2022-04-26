@@ -20,7 +20,6 @@ import (
 var (
 	serverAddr = flag.String("addr", "localhost:50051", "The server address in the format of host:port")
 	port       = flag.Int("port", 50051, "The server port")
-	database   = flag.String("database", "", "The file of database SQLite")
 )
 
 // gRPC прокси-сервис для осуществления пополнения
