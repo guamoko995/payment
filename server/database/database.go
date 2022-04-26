@@ -66,7 +66,7 @@ type Account struct {
 
 // DB - база данных платежных аккаунтов.
 type DB struct {
-	sql *sql.DB
+	Sql *sql.DB
 
 	// Предварительно скомпилированные запросы
 	downBalance *sql.Stmt
@@ -83,34 +83,34 @@ func NewDB() (*DB, error) {
 	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", *host, *port, *user, *password, *dbname)
 
 	// создает/открывает файл базы данных
-	db.sql, err = sql.Open("pgx", psqlconn)
+	db.Sql, err = sql.Open("pgx", psqlconn)
 	if err != nil {
 		return nil, err
 	}
 
 	// создает/проверяет наличие таблицы accounts,
 	// соответствующей schemaSQL
-	if _, err = db.sql.Exec(schemaSQL); err != nil {
+	if _, err = db.Sql.Exec(schemaSQL); err != nil {
 		return nil, err
 	}
 
 	// предварительная компеляция заголовков
-	db.addAccount, err = db.sql.Prepare(addAccount)
+	db.addAccount, err = db.Sql.Prepare(addAccount)
 	if err != nil {
 		return nil, err
 	}
 
-	db.getBalance, err = db.sql.Prepare(getBalance)
+	db.getBalance, err = db.Sql.Prepare(getBalance)
 	if err != nil {
 		return nil, err
 	}
 
-	db.downBalance, err = db.sql.Prepare(downBalance)
+	db.downBalance, err = db.Sql.Prepare(downBalance)
 	if err != nil {
 		return nil, err
 	}
 
-	db.upBalance, err = db.sql.Prepare(upBalance)
+	db.upBalance, err = db.Sql.Prepare(upBalance)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func NewDB() (*DB, error) {
 
 // AddAccount - добавляет платежный аккаунт в базу данных.
 func (db *DB) AddAccount() error {
-	tx, err := db.sql.Begin()
+	tx, err := db.Sql.Begin()
 	if err != nil {
 		return err
 	}
@@ -136,7 +136,7 @@ func (db *DB) AddAccount() error {
 
 // GetBalance - возвращает баланс по ID.
 func (db *DB) GetBalance(ID uint64) (int64, error) {
-	tx, err := db.sql.Begin()
+	tx, err := db.Sql.Begin()
 	if err != nil {
 		return 0, err
 	}
@@ -159,7 +159,7 @@ func (db *DB) GetBalance(ID uint64) (int64, error) {
 
 // UpBalance - пополняет баланс по ID на указанную сумму.
 func (db *DB) UpBalance(ID uint64, sum int64) error {
-	tx, err := db.sql.Begin()
+	tx, err := db.Sql.Begin()
 	if err != nil {
 		return err
 	}
@@ -175,7 +175,7 @@ func (db *DB) UpBalance(ID uint64, sum int64) error {
 
 // DownBalance - списывает с баланса по ID указанную сумму.
 func (db *DB) DownBalance(ID uint64, sum int64) error {
-	tx, err := db.sql.Begin()
+	tx, err := db.Sql.Begin()
 	if err != nil {
 		return err
 	}
@@ -190,7 +190,7 @@ func (db *DB) DownBalance(ID uint64, sum int64) error {
 }
 
 // AmountTransfer - осуществляет перевод суммы с одного ID на другой.
-func (db *DB) AmountTransfer(senderID, geterID uint64, sum int64) error {
+func (db *DB) SumTransfer(senderID, geterID uint64, sum int64) error {
 	// Получение баланса отправителя.
 	senderBalance, err := db.GetBalance(senderID)
 	if err != nil {
@@ -206,7 +206,7 @@ func (db *DB) AmountTransfer(senderID, geterID uint64, sum int64) error {
 	}
 
 	// Начало операции перевода
-	tx, err := db.sql.Begin()
+	tx, err := db.Sql.Begin()
 	if err != nil {
 		return err
 	}

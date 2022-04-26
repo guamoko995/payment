@@ -13,8 +13,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	proto "payment_service/proto"
-	db "payment_service/server/database"
+	proto "payment/proto"
+	db "payment/server/database"
 )
 
 var (
@@ -31,7 +31,7 @@ type PaymentServer struct {
 }
 
 // Реализация соотвествующих RPC сервиса.
-func (s *PaymentServer) UpAccount(ctx context.Context, req *proto.UpRequest) (*proto.Enum, error) {
+func (s *PaymentServer) UpSum(ctx context.Context, req *proto.UpRequest) (*proto.Enum, error) {
 	err := s.Storage.UpBalance(req.ID, int64(req.Sum))
 	if err != nil {
 		return &proto.Enum{}, err
@@ -40,8 +40,8 @@ func (s *PaymentServer) UpAccount(ctx context.Context, req *proto.UpRequest) (*p
 	return &proto.Enum{}, nil
 }
 
-func (s *PaymentServer) AmountTransfer(ctx context.Context, req *proto.TransferRequest) (*proto.Enum, error) {
-	err := s.Storage.AmountTransfer(req.SenderID, req.GeterID, int64(req.Sum))
+func (s *PaymentServer) SumTransfer(ctx context.Context, req *proto.TransferRequest) (*proto.Enum, error) {
+	err := s.Storage.SumTransfer(req.SenderID, req.GeterID, int64(req.Sum))
 	if err != nil {
 		return &proto.Enum{}, err
 	}

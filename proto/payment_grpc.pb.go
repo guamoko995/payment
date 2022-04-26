@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.20.0
-// source: payment.proto
+// source: proto/payment.proto
 
 package payment
 
@@ -89,7 +89,7 @@ type UnsafePaymentServer interface {
 }
 
 func RegisterPaymentServer(s grpc.ServiceRegistrar, srv PaymentServer) {
-	s.RegisterService(&Payment_ServiceDesc, srv)
+	s.RegisterService(&paymentDesc, srv)
 }
 
 func _Payment_UpSum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -128,10 +128,10 @@ func _Payment_SumTransfer_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-// Payment_ServiceDesc is the grpc.ServiceDesc for Payment service.
+// paymentDesc is the grpc.ServiceDesc for Payment service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Payment_ServiceDesc = grpc.ServiceDesc{
+var paymentDesc = grpc.ServiceDesc{
 	ServiceName: "proto.Payment",
 	HandlerType: (*PaymentServer)(nil),
 	Methods: []grpc.MethodDesc{
@@ -145,5 +145,5 @@ var Payment_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "payment.proto",
+	Metadata: "proto/payment.proto",
 }

@@ -1,17 +1,16 @@
 package database
 
 import (
-	"os"
 	"testing"
 )
 
 // Тест работы базы данных
 func TestDatabase(t *testing.T) {
-	*host = "localhost"
+	/**host = "localhost"
 	*port = 5432
 	*user = "postgres"
 	*password = os.Getenv("pgxPass")
-	*dbname = "postgres"
+	*dbname = "postgres"*/
 
 	// Инициализация базы данных
 	b, err := NewDB()
@@ -66,7 +65,7 @@ func TestDatabase(t *testing.T) {
 
 	// Перевод
 	dif := int64(100)
-	err = b.AmountTransfer(1, 2, dif)
+	err = b.SumTransfer(1, 2, dif)
 	if err != nil {
 		t.Errorf("Set error: %s", err)
 	}
@@ -90,7 +89,7 @@ func TestDatabase(t *testing.T) {
 	}
 
 	// Удаление таблицы
-	_, err = b.sql.Exec("DROP TABLE accounts")
+	_, err = b.Sql.Exec("DROP TABLE accounts")
 	if err != nil {
 		t.Errorf("Set error: %s", err)
 	}

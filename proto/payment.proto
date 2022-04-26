@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "payment_service/payment";
+option go_package = "payment/payment";
 
 package proto;
 
@@ -22,8 +22,8 @@ message UpRequest {
 
 // Запрос на перевод указанной Sum с PayerID на RecipientID.
 message TransferRequest {
-    uint64 GeterID = 1;
-    uint64 SenderID = 2;
+    uint64 SenderID = 1;
+    uint64 GeterID = 2;
     uint64 Sum = 3;
 }
 

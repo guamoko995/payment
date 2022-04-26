@@ -1,4 +1,4 @@
-module payment_service
+module payment
 
 go 1.18
 
